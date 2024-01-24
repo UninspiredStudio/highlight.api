@@ -1,0 +1,27 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Page {
+  id         Int         @id @default(autoincrement())
+  slug       String      @unique()
+  highlights Highlight[]
+
+  @@index(fields: [slug])
+}
+
+model Highlight {
+  id     Int    @id @default(autoincrement())
+  pageId Int
+  page   Page   @relation(fields: [pageId], references: [id])
+  xPath  String
+  text   String
+  userId String
+
+  @@unique([userId, xPath, text])
+}
