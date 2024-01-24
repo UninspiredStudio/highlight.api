@@ -24,7 +24,7 @@ jobs:
           fi
   BuildAndPushImage:
     name: Build and push image
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     env:
       REGISTRY: docker.io
       DOCKER_USER: ${{ secrets.DOCKER_USER }}
