@@ -16,7 +16,6 @@ export async function uniqueUserIdMiddleware(
       "127.0.0.1";
     const userAgent = req.headers["user-agent"];
     const page = req.params.slug;
-    console.log({ ip, userAgent, page });
     if (!ip || !userAgent || !page) {
       return res.status(400).json({ message: "Bad Request" });
     }
@@ -27,7 +26,6 @@ export async function uniqueUserIdMiddleware(
     };
     const uid = getAnonymousUserId(SALT, requestDetails);
     res.locals.uid = uid;
-    console.log({ uid });
     return next();
   } catch (e) {
     return res.status(500).json({ message: "Internal Server Error" });

@@ -54,8 +54,17 @@ export class HighlightController {
         ...highlight,
       }));
 
-      const newHighlights = await this.prismaClient.highlight.createMany({
+      await this.prismaClient.highlight.createMany({
         data: highlightData,
+        skipDuplicates: true,
+      });
+
+      const newHighlights = await this.prismaClient.highlight.findMany({
+        where: {
+          page: {
+            slug,
+          },
+        },
       });
 
       return res.status(200).json(newHighlights);

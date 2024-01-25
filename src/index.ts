@@ -5,6 +5,7 @@ import http from "node:http";
 import bodyParser from "body-parser";
 import { HighlightController } from "./controllers/highlightController";
 import Redis from "ioredis";
+import cors from "cors";
 import { redisCacheMiddleware } from "./middleware/redisCacheMiddleware";
 import { PrismaClient } from "@prisma/client";
 import { uniqueUserIdMiddleware } from "./middleware/uniqueUserIdMiddleware";
@@ -25,6 +26,7 @@ const isUsingRedis = REDIS_HOST && REDIS_PORT && REDIS_PASSWORD;
  */
 const app = express();
 app.use(bodyParser.json());
+app.use(cors());
 app.set("trust proxy", true);
 PUBLIC_API_KEY && app.use(apiKeyMiddleware);
 
@@ -36,6 +38,8 @@ const redis = isUsingRedis
       password: REDIS_PASSWORD,
     })
   : null;
+
+app.options("*", cors());
 
 /**
  * Highlight Routes
